@@ -2,7 +2,7 @@ import os
 FOLDER_PATH = os.path.join(os.getcwd(), 'mutant_plots')
 def change_folder_names():
     
-    folder = open(FOLDER_PATH, 'w+')
+    #folder = open(FOLDER_PATH, 'w+')
     for f in os.listdir(FOLDER_PATH):
         print(f)
 

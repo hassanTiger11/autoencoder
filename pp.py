@@ -8,3 +8,5 @@ def change_folder_names():
 
 def change_file_names():
     return
+
+change_folder_names()

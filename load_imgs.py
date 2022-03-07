@@ -18,8 +18,10 @@ def create_filname_dict():
         images = os.listdir(cwd)
         for img in images:
             if(lbl in ds):
+                print(f'#ds[{lbl} = [..., {os.path.join(cwd, img)}]')
                 ds[lbl].append(os.path.join(cwd, img))
             else:
+                print(f'*ds[{lbl} = [{os.path.join(cwd, img)}]]')
                 ds[lbl] = []
                 ds[lbl].append(os.path.join(cwd, img))
     output = open('ds.json'm 'r+')

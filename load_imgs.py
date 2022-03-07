@@ -1,10 +1,10 @@
 '''
 This file '''
-import numpy as np
+import numpy 
 import os
-import PIL
 from PIL import Image
-
+from scipy import misc
+import imageio
 #import tensorflow as tf
 #import tensorflow_datasets as tfds
 import pathlib
@@ -39,16 +39,19 @@ def load_numpy_dict_from_json(ds_filename_dict={}):
     This function takes in the file paths dataset and turns them into
     numpy arrays with labels
     '''
+    counter = 1
     if(ds_filename_dict == {}):
         ds_filename_dict = json.load(open('ds.json', 'r+'))
     for lbl in ds_filename_dict:
         for i, path in enumerate (ds_filename_dict[lbl]):
-            image_file = Image.open(path)
+            print(f'reading{counter}: {path}')
+            image_file = imageio.imread(path)
             im_array = numpy.array(image_file)
             ds_filename_dict[lbl][i] = im_array
+            counter+=1
     ds_numpy = ds_filename_dict
     output = open('ds_numpy.json', 'r+')
     json.dump(ds_numpy, output, indent=3)
     output.close()
 
-create_filname_dict()
+load_numpy_dict_from_json({})

@@ -4,6 +4,7 @@ import numpy as np
 import os
 import PIL
 from PIL import Image
+from scipy import misc
 
 #import tensorflow as tf
 #import tensorflow_datasets as tfds
@@ -43,8 +44,9 @@ def load_numpy_dict_from_json(ds_filename_dict={}):
         ds_filename_dict = json.load(open('ds.json', 'r+'))
     for lbl in ds_filename_dict:
         for i, path in enumerate (ds_filename_dict[lbl]):
+            os.chdir()
             image_file = Image.open(path)
-            im_array = numpy.array(image_file)
+            im_array = misc.imread(image_file)
             ds_filename_dict[lbl][i] = im_array
     ds_numpy = ds_filename_dict
     output = open('ds_numpy.json', 'r+')

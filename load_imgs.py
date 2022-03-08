@@ -63,6 +63,17 @@ def load_dataset():
     print(f'dataset = {dataset}')
     return dataset
 
+def load_dataset2():
+    print('---------load_dataset2----------')
+    PATH = os.path.join(os.getcwd(), 'subset_numpy')
+    file_list = os.listdir(PATH)
+    dataset =  tf.data.Dataset.from_tensor_slices(file_list)
+    dataset = dataset.map(read_npy_file)
+    dataset = dataset.shuffle(100)
+    dataset.padded_batch(35)
+    dataset = dataset.repeat()
+    print(f'dataset: {dataset}')
+    return dataset
 
 DS_PATH = os.path.join(os.getcwd(), "subset")
 def create_filname_dict():
@@ -110,4 +121,4 @@ def load_numpy_dict_from_json(ds_filename_dict={}):
     
 
 if __name__ == "__main__":
-    load_dataset()
+    load_dataset2()

@@ -27,14 +27,18 @@ def load_dataset():
     print('---------load_dataset----------')
     PATH = os.path.join(os.getcwd(), 'subset_numpy')
     file_list = os.listdir(PATH)
-    dataset = tf.data.Dataset.from_tensor_slices(file_list)
+    dataset = {}
 
-    for elem in dataset:
+    for elem in file_list:
         print(f'type: {type(elem)} --> {elem}')
+        filename_without_extension = elem.split('.')[0]
+        dataset[filename_without_extension]= read_npy_file(elem)
+
     
-    dataset = dataset.map(lambda item: tuple(tf.numpy_function(read_npy_file, [item], [tf.float32,])))
     for elem in dataset:
         print(f'type: {type(elem)} --> {elem}')
+    dataset = tf.data.Dataset.from_tensor_slices(dataset)
+    print(f'dataset = {dataset}')
     return dataset
 
 

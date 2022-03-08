@@ -26,7 +26,8 @@ def load_dataset():
     PATH = os.path.join(os.getcwd(), 'subset_numpy')
     file_list = os.listdir(PATH)
     dataset = tf.data.Dataset.from_tensor_slices(file_list)
-    print(dataset[0])
+    for elem in dataset:
+        print(f'type: {type(elem)} --> {elem}')
     #dataset = dataset.map(lambda item: tuple(tf.numpy_function(read_npy_file, [item], [tf.float32,])))
 
     

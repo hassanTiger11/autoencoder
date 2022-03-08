@@ -11,6 +11,7 @@ import pathlib
 from pathlib import Path
 import json
 import tensorflow as tf
+import sys
 from tifffile import memmap
 
 def read_npy_file(item):
@@ -24,7 +25,8 @@ def load_dataset():
   dataset = tf.data.Dataset.from_tensor_slices(file_list)
   dataset = dataset.map(
           lambda item: tuple(tf.numpy_function(read_npy_file, [item], [tf.float32,])))
-  print(dataset)
+  tf.print(dataset, output_stream=sys.stdout)
+  return dataset
 
 
 DS_PATH = os.path.join(os.getcwd(), "subset")

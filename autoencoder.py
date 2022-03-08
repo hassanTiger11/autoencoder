@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 import os
+from load_imgs import load_dataset
 
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.model_selection import train_test_split
@@ -14,18 +15,6 @@ from tensorflow.keras import layers, losses
 from tensorflow.keras.datasets import fashion_mnist
 from tensorflow.keras.models import Model
 
-def read_npy_file(item):
-    data = np.load(item.decode())
-    return data.astype(np.float32)
-
-
-def load_dataset():
-  PATH = os.path.join(os.getcwd(), 'subset_numpy')
-  file_list = os.listdir(PATH)
-  dataset = tf.data.Dataset.from_tensor_slices(file_list)
-  dataset = dataset.map(
-          lambda item: tuple(tf.py_func(read_npy_file, [item], [tf.float32,])))
-  print(dataset)
 
 
 class Autoencoder(Model):

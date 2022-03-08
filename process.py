@@ -1,11 +1,14 @@
   
 from autoencoder import *
+from load_imgs import load_dataset
 
-autoencoder = Autoencoder(latent_dim) 
+ds = load_dataset()
+
+autoencoder = Autoencoder(64) 
 
 autoencoder.compile(optimizer='adam', loss=losses.MeanSquaredError())
 
-autoencoder.fit(x_train, x_train,
+autoencoder.fit(ds, ds,
                 epochs=10,
                 shuffle=True,
                 validation_data=(x_test, x_test))

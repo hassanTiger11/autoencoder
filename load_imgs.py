@@ -13,7 +13,10 @@ This file works on preprocessing the tiff images
     
 3) I pull the numpy arrays into a tensorflow dataset
     WARNING: I apply a reshape transformation on the arrays so I can fit them into 
-    a dataset'''
+    a dataset
+    
+    Note to self:
+    load_dataset has a problem when being use with fitting the network'''
 import numpy  
 import numpy as np
 import os
@@ -58,8 +61,8 @@ def load_dataset():
     
     for elem in dataset:
         print(f'type: {type(elem)} --> {elem}')
-    #dataset = tf.data.Dataset.from_generator(lambda: create_generator(tuple(dataset)),output_types= tf.float32, output_shapes=(None,4))
-    dataset = tf.data.Dataset.from_tensor_slices(tuple(dataset))
+    dataset = tf.data.Dataset.from_generator(lambda: create_generator(tuple(dataset)),output_types= tf.float32, output_shapes=(None,4))
+    #dataset = tf.data.Dataset.from_tensor_slices(tuple(dataset))
     print(f'dataset = {dataset}')
     return dataset
 

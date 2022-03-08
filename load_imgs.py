@@ -17,6 +17,7 @@ from tifffile import memmap
 
 def read_npy_file(item):
     data = np.load(item.decode())
+    print(f'{item}=\n{data}')
     return data.astype(np.float32)
 
 
@@ -25,9 +26,7 @@ def load_dataset():
   file_list = os.listdir(PATH)
   dataset = tf.data.Dataset.from_tensor_slices(file_list)
   dataset = dataset.map(lambda item: tuple(tf.numpy_function(read_npy_file, [item], [tf.float32,])))
-  dataset = dataset.shuffle(1024).batch(32).prefetch(tf.data.AUTOTUNE)
-
-  tf.print(dataset, output_stream=sys.stdout)
+  
   return dataset
 
 
@@ -77,4 +76,5 @@ def load_numpy_dict_from_json(ds_filename_dict={}):
     
 
 if __name__ == "__main__":
-    load_dataset()
+    create_filname_dict()
+    load_numpy_dict_from_json(ds_filename_dict={})

@@ -1,5 +1,19 @@
 '''
-This file '''
+This file works on preprocessing the tiff images
+1) I create a json file that keeps track of the file names of my ds
+        {
+            ds:
+                label:
+                    [img1, img2, ....]
+                ...
+
+        }
+2) I create a numpy folder containing all of the images converted to numpy arrays
+    It follows the same structure as before
+    
+3) I pull the numpy arrays into a tensorflow dataset
+    WARNING: I apply a reshape transformation on the arrays so I can fit them into 
+    a dataset'''
 import numpy  
 import numpy as np
 import os
@@ -22,11 +36,14 @@ def read_npy_file(item):
     print(f'filename: {item}')
     path = os.path.join(os.getcwd(), 'subset_numpy', item)
     data = np.load(path)
-    data.reshape((5000, 2000, 3))
+    
     print(f'{path}=\n{np.shape(data)}', file=open('shapes', 'a+'))
     return data.astype(np.float32)
 
-
+def create_generator(list_of_arrays):
+    for i in list_of_arrays:
+        yield i
+        
 def load_dataset():
     print('---------load_dataset----------')
     PATH = os.path.join(os.getcwd(), 'subset_numpy')
@@ -41,7 +58,7 @@ def load_dataset():
     
     for elem in dataset:
         print(f'type: {type(elem)} --> {elem}')
-    dataset = tf.data.Dataset.from_tensor_slices(dataset)
+    dataset = tf.data.Dataset.from_generator(lambda: create_generator(list_of_arrays),output_types= tf.float32, output_shapes=(None,4))
     print(f'dataset = {dataset}')
     return dataset
 

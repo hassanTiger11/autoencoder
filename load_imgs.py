@@ -58,7 +58,8 @@ def load_dataset():
     
     for elem in dataset:
         print(f'type: {type(elem)} --> {elem}')
-    dataset = tf.data.Dataset.from_generator(lambda: create_generator(tuple(dataset)),output_types= tf.float32, output_shapes=(None,4))
+    #dataset = tf.data.Dataset.from_generator(lambda: create_generator(tuple(dataset)),output_types= tf.float32, output_shapes=(None,4))
+    dataset = tf.data.Dataset.from_tensor_slices(tuple(dataset))
     print(f'dataset = {dataset}')
     return dataset
 

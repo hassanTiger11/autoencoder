@@ -39,23 +39,20 @@ def load_numpy_dict_from_json(ds_filename_dict={}):
     This function takes in the file paths dataset and turns them into
     numpy arrays with labels
     '''
-    counter = 1
+    
     if(ds_filename_dict == {}):
         ds_filename_dict = json.load(open('ds.json', 'r+'))
     for lbl in ds_filename_dict:
         
         for i, path in enumerate (ds_filename_dict[lbl]):
-            print(f'reading{counter}: {path}')
-            
+            print(f'reading{i}: {path}')
+            filename = path.split('/')[-1].split('.')[0]
             image_file = imageio.imread(path)
             im_array = numpy.array(image_file)
-            ds_filename_dict[lbl][i] = im_array.tolist()
-            print(f'written {im_array}')
-            counter+=1
-    ds_numpy = ds_filename_dict
-    output = open('ds_numpy.json', 'r+')
-    json.dump(ds_numpy, output, indent=3)
-    output.close()
+            pathlib.Path.touch(f'subset_numpy/{filename}.npy')
+            numpy.save(f'subset_numpy/{filename}.npy', im_array)
+    
+    
 
 if __name__ == "__main__":
     

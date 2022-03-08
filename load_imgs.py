@@ -23,8 +23,9 @@ def load_dataset():
   PATH = os.path.join(os.getcwd(), 'subset_numpy')
   file_list = os.listdir(PATH)
   dataset = tf.data.Dataset.from_tensor_slices(file_list)
-  dataset = dataset.map(
-          lambda item: tuple(tf.numpy_function(read_npy_file, [item], [tf.float32,])))
+  dataset = dataset.map(lambda item: tuple(tf.numpy_function(read_npy_file, [item], [tf.float32,])))
+  dataset = dataset.shuffle(1024).batch(32).prefetch(tf.data.AUTOTUNE)
+
   tf.print(dataset, output_stream=sys.stdout)
   return dataset
 
@@ -56,7 +57,8 @@ def create_filname_dict():
 def load_numpy_dict_from_json(ds_filename_dict={}):
     '''
     This function takes in the file paths dataset and turns them into
-    numpy arrays with labels
+    numpy dataset
+    To scale up change PATH names
     '''
     
     if(ds_filename_dict == {}):

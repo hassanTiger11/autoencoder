@@ -68,7 +68,7 @@ def load_dataset2():
     PATH = os.path.join(os.getcwd(), 'subset_numpy')
     file_list = os.listdir(PATH)
     dataset =  tf.data.Dataset.from_tensor_slices(file_list)
-    dataset = dataset.map(read_npy_file)
+    dataset = dataset.map(lambda item: read_npy_file(item))
     dataset = dataset.shuffle(100)
     dataset.padded_batch(35)
     dataset = dataset.repeat()

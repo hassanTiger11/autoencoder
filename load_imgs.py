@@ -19,7 +19,7 @@ def read_npy_file(item):
     print(f'filename: {item}')
     path = os.path.join(os.getcwd(), 'subset_numpy', item)
     data = np.load(path)
-    print(f'{path}=\n{np.shape(data)}', file=open('shapes', 'w+'))
+    print(f'{path}=\n{np.shape(data)}', file=open('shapes', 'a+'))
     return data.astype(np.float32)
 
 

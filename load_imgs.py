@@ -22,12 +22,13 @@ def read_npy_file(item):
 
 
 def load_dataset():
-  PATH = os.path.join(os.getcwd(), 'subset_numpy')
-  file_list = os.listdir(PATH)
-  dataset = tf.data.Dataset.from_tensor_slices(file_list)
-  dataset = dataset.map(lambda item: tuple(tf.numpy_function(read_npy_file, [item], [tf.float32,])))
-  
-  return dataset
+    print('---------load_dataset----------')
+    PATH = os.path.join(os.getcwd(), 'subset_numpy')
+    file_list = os.listdir(PATH)
+    dataset = tf.data.Dataset.from_tensor_slices(file_list)
+    dataset = dataset.map(lambda item: tuple(tf.numpy_function(read_npy_file, [item], [tf.float32,])))
+    
+    return dataset
 
 
 DS_PATH = os.path.join(os.getcwd(), "subset")

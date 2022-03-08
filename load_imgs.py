@@ -23,7 +23,7 @@ def load_dataset():
   file_list = os.listdir(PATH)
   dataset = tf.data.Dataset.from_tensor_slices(file_list)
   dataset = dataset.map(
-          lambda item: tuple(tf.py_func(read_npy_file, [item], [tf.float32,])))
+          lambda item: tuple(tf.numpy_function(read_npy_file, [item], [tf.float32,])))
   print(dataset)
 
 

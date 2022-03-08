@@ -16,9 +16,13 @@ import sys
 from tifffile import memmap
 
 def read_npy_file(item):
+    '''
+    WARNING: This function uses reshape so I can fit the data into a tf dataset obj
+    '''
     print(f'filename: {item}')
     path = os.path.join(os.getcwd(), 'subset_numpy', item)
     data = np.load(path)
+    data.reshape((5000, 2000, 3))
     print(f'{path}=\n{np.shape(data)}', file=open('shapes', 'a+'))
     return data.astype(np.float32)
 

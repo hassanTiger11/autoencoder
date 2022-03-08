@@ -43,11 +43,14 @@ def load_numpy_dict_from_json(ds_filename_dict={}):
     if(ds_filename_dict == {}):
         ds_filename_dict = json.load(open('ds.json', 'r+'))
     for lbl in ds_filename_dict:
+        
         for i, path in enumerate (ds_filename_dict[lbl]):
             print(f'reading{counter}: {path}')
+            
             image_file = imageio.imread(path)
             im_array = numpy.array(image_file)
             ds_filename_dict[lbl][i] = im_array
+            print(f'written {im_array}')
             counter+=1
     ds_numpy = ds_filename_dict
     output = open('ds_numpy.json', 'r+')
@@ -56,4 +59,4 @@ def load_numpy_dict_from_json(ds_filename_dict={}):
 
 if __name__ == "__main__":
     create_filname_dict()
-    load_numpy_dict_from_json()
+    load_numpy_dict_from_json({})

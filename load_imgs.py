@@ -10,7 +10,23 @@ import imageio
 import pathlib
 from pathlib import Path
 import json
+import tensorflow as tf
 from tifffile import memmap
+
+def read_npy_file(item):
+    data = np.load(item.decode())
+    return data.astype(np.float32)
+
+
+def load_dataset():
+  PATH = os.path.join(os.getcwd(), 'subset_numpy')
+  file_list = os.listdir(PATH)
+  dataset = tf.data.Dataset.from_tensor_slices(file_list)
+  dataset = dataset.map(
+          lambda item: tuple(tf.py_func(read_npy_file, [item], [tf.float32,])))
+  print(dataset)
+
+
 DS_PATH = os.path.join(os.getcwd(), "subset")
 def create_filname_dict():
     '''
@@ -56,5 +72,4 @@ def load_numpy_dict_from_json(ds_filename_dict={}):
     
 
 if __name__ == "__main__":
-    
-    load_numpy_dict_from_json({})
+    load_dataset()

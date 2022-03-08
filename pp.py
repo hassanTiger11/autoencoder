@@ -24,4 +24,6 @@ def change_file_names(new_folder_name = ''):
                     os.rename(old_img_name, new_img_name)
     
 
+
+
 change_folder_names(FOLDER_PATH = FOLDER_PATH)

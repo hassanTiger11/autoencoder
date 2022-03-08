@@ -9,3 +9,4 @@ autoencoder.fit(x_train, x_train,
                 epochs=10,
                 shuffle=True,
                 validation_data=(x_test, x_test))
+autoencoder.save('saved_models/autoencoder_0')

@@ -56,4 +56,4 @@ def load_numpy_dict_from_json(ds_filename_dict={}):
 
 if __name__ == "__main__":
     create_filname_dict()
-    load_numpy_dict_from_json
+    load_numpy_dict_from_json()

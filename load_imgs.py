@@ -8,6 +8,7 @@ import imageio
 #import tensorflow as tf
 #import tensorflow_datasets as tfds
 import pathlib
+from pathlib import Path
 import json
 from tifffile import memmap
 DS_PATH = os.path.join(os.getcwd(), "subset")
@@ -49,7 +50,7 @@ def load_numpy_dict_from_json(ds_filename_dict={}):
             filename = path.split('/')[-1].split('.')[0]
             image_file = imageio.imread(path)
             im_array = numpy.array(image_file)
-            pathlib.Path.touch(f'subset_numpy/{filename}.npy')
+            Path.touch(f'subset_numpy/{filename}.npy')
             numpy.save(f'subset_numpy/{filename}.npy', im_array)
     
     

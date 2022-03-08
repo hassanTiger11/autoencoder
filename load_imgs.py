@@ -16,8 +16,10 @@ import sys
 from tifffile import memmap
 
 def read_npy_file(item):
-    data = np.load(item.decode())
-    print(f'{item}=\n{data}')
+    print(f'filename: {item}')
+    path = os.path.join(os.getcwd(), 'subset_numpy', item)
+    data = np.load(path)
+    print(f'{path}=\n{data}')
     return data.astype(np.float32)
 
 
@@ -29,6 +31,7 @@ def load_dataset():
 
     for elem in dataset:
         print(f'type: {type(elem)} --> {elem}')
+    
     dataset = dataset.map(lambda item: tuple(tf.numpy_function(read_npy_file, [item], [tf.float32,])))
     for elem in dataset:
         print(f'type: {type(elem)} --> {elem}')

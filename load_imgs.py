@@ -43,7 +43,7 @@ def read_npy_file(item):
 def create_generator(list_of_arrays):
     for i in list_of_arrays:
         yield i
-        
+
 def load_dataset():
     print('---------load_dataset----------')
     PATH = os.path.join(os.getcwd(), 'subset_numpy')
@@ -58,7 +58,7 @@ def load_dataset():
     
     for elem in dataset:
         print(f'type: {type(elem)} --> {elem}')
-    dataset = tf.data.Dataset.from_generator(lambda: create_generator(list_of_arrays),output_types= tf.float32, output_shapes=(None,4))
+    dataset = tf.data.Dataset.from_generator(lambda: create_generator(tuple(dataset)),output_types= tf.float32, output_shapes=(None,4))
     print(f'dataset = {dataset}')
     return dataset
 

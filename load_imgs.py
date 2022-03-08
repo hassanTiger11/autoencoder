@@ -1,6 +1,7 @@
 '''
 This file '''
-import numpy 
+import numpy  
+import numpy as np
 import os
 from PIL import Image
 from scipy import misc

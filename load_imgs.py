@@ -16,7 +16,14 @@ This file works on preprocessing the tiff images
     a dataset
     
     Note to self:
-    load_dataset has a problem when being use with fitting the network'''
+    1) load_dataset has a problem when being use with fitting the network
+    ERR: ValueError: `y` argument is not supported when using dataset as input.
+    This is probably becuase I am using a generator
+    In fact my dataset is from diff sizes
+    
+    2) I am trying to use batch padding in load_dataset2
+    This is more reasonable solution because I would be able to make all matrices of similar size
+    I am having a problem with: dataset.map'''
 import numpy  
 import numpy as np
 import os

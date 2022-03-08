@@ -50,7 +50,7 @@ def load_numpy_dict_from_json(ds_filename_dict={}):
             filename = path.split('/')[-1].split('.')[0]
             image_file = imageio.imread(path)
             im_array = numpy.array(image_file)
-            Path.touch(f'subset_numpy/{filename}.npy')
+            Path(f'subset_numpy/{filename}.npy').touch(exist_ok=True)
             numpy.save(f'subset_numpy/{filename}.npy', im_array)
     
     

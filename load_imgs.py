@@ -1,6 +1,31 @@
 '''
-This file '''
-import numpy 
+This file works on preprocessing the tiff images
+1) I create a json file that keeps track of the file names of my ds
+        {
+            ds:
+                label:
+                    [img1, img2, ....]
+                ...
+
+        }
+2) I create a numpy folder containing all of the images converted to numpy arrays
+    It follows the same structure as before
+    
+3) I pull the numpy arrays into a tensorflow dataset
+    WARNING: I apply a reshape transformation on the arrays so I can fit them into 
+    a dataset
+    
+    Note to self:
+    1) load_dataset has a problem when being use with fitting the network
+    ERR: ValueError: `y` argument is not supported when using dataset as input.
+    This is probably becuase I am using a generator
+    In fact my dataset is from diff sizes
+    
+    2) I am trying to use batch padding in load_dataset2
+    This is more reasonable solution because I would be able to make all matrices of similar size
+    I am having a problem with: dataset.map'''
+import numpy  
+import numpy as np
 import os
 from PIL import Image
 from scipy import misc
@@ -8,8 +33,60 @@ import imageio
 #import tensorflow as tf
 #import tensorflow_datasets as tfds
 import pathlib
+from pathlib import Path
 import json
+import tensorflow as tf
+import sys
 from tifffile import memmap
+
+
+def read_npy_file(item):
+    '''
+    WARNING: This function uses reshape so I can fit the data into a tf dataset obj
+    '''
+    print(f'filename: {item}')
+    path = os.path.join(os.getcwd(), 'subset_numpy', item)
+    data = np.load(path)
+    
+    print(f'{path}=\n{np.shape(data)}', file=open('shapes', 'a+'))
+    return data.astype(np.float32)
+
+def create_generator(list_of_arrays):
+    for i in list_of_arrays:
+        yield i
+
+def load_dataset():
+    print('---------load_dataset----------')
+    PATH = os.path.join(os.getcwd(), 'subset_numpy')
+    file_list = os.listdir(PATH)
+    dataset = {}
+
+    for elem in file_list:
+        print(f'type: {type(elem)} --> {elem}')
+        filename_without_extension = elem.split('.')[0]
+        dataset[filename_without_extension]= read_npy_file(elem)
+
+    
+    for elem in dataset:
+        print(f'type: {type(elem)} --> {elem}')
+    dataset = tf.data.Dataset.from_generator(lambda: create_generator(tuple(dataset)),output_types= tf.float32, output_shapes=(None,4))
+    #dataset = tf.data.Dataset.from_tensor_slices(tuple(dataset))
+    print(f'dataset = {dataset}')
+    return dataset
+
+def load_dataset2():
+    print('---------load_dataset2----------')
+    PATH = os.path.join(os.getcwd(), 'subset_numpy')
+    file_list = os.listdir(PATH)
+    dataset =  tf.data.Dataset.from_tensor_slices(file_list)
+    dataset = dataset.map(lambda item: read_npy_file(item))
+    dataset = dataset.shuffle(100)
+    dataset.padded_batch(35)
+    dataset = dataset.repeat()
+    print(f'dataset: {dataset}')
+    return dataset
+
+
 DS_PATH = os.path.join(os.getcwd(), "subset")
 def create_filname_dict():
     '''
@@ -37,24 +114,25 @@ def create_filname_dict():
 def load_numpy_dict_from_json(ds_filename_dict={}):
     '''
     This function takes in the file paths dataset and turns them into
-    numpy arrays with labels
+    numpy dataset
+    To scale up change PATH names
     '''
-    counter = 1
+    
     if(ds_filename_dict == {}):
         ds_filename_dict = json.load(open('ds.json', 'r+'))
     for lbl in ds_filename_dict:
+        
         for i, path in enumerate (ds_filename_dict[lbl]):
-            print(f'reading{counter}: {path}')
+            print(f'reading{i}: {path}')
+            filename = path.split('/')[-1].split('.')[0]
             image_file = imageio.imread(path)
             im_array = numpy.array(image_file)
-            ds_filename_dict[lbl][i] = im_array
-            counter+=1
-    ds_numpy = ds_filename_dict
-    output = open('ds_numpy.json', 'r+')
-    json.dump(ds_numpy, output, indent=3)
-    output.close()
+            Path(f'subset_numpy/{filename}.npy').touch(exist_ok=True)
+            numpy.save(f'subset_numpy/{filename}.npy', im_array)
+    
+    
 
 if __name__ == "__main__":
-    create_filname_dict()
-    
-    #load_numpy_dict_from_json({})
+
+    load_dataset2()
+

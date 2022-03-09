@@ -2,3 +2,6 @@
 mutant_plots*
 restart
 ds.json
+*.json
+ds*
+*subset*

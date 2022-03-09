@@ -23,5 +23,10 @@ def change_file_names(new_folder_name = ''):
                     print(f'#chnge img {old_img_name} -> {new_img_name}')
                     os.rename(old_img_name, new_img_name)
     
+def tf_file_convention():
+    '''
+    This function changes the dataset file names to follow tensorflow conventions:
+    dataset_name[/config_name][:version][/kwargs]
+    '''
 
 change_folder_names(FOLDER_PATH = FOLDER_PATH)

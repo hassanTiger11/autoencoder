@@ -1,6 +1,11 @@
 '''
 This file is influeced by Tensorflow tutorial
 More edits will be applied to it
+
+This file contains the implemetation of the neural networks
+For now it is very simple
+Encoder: Flatten -> Dense
+Decoder: Dense- ->
 '''
 import matplotlib.pyplot as plt
 import numpy as np
@@ -13,15 +18,7 @@ from tensorflow.keras import layers, losses
 from tensorflow.keras.datasets import fashion_mnist
 from tensorflow.keras.models import Model
 
-(x_train, _), (x_test, _) = fashion_mnist.load_data()
 
-x_train = x_train.astype('float32') / 255.
-x_test = x_test.astype('float32') / 255.
-
-print (x_train.shape)
-print (x_test.shape)
-
-latent_dim = 64 
 
 class Autoencoder(Model):
   def __init__(self, latent_dim):

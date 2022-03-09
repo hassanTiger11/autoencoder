@@ -10,7 +10,7 @@ import imageio
 import pathlib
 import json
 from tifffile import memmap
-DS_PATH = os.path.join(os.getcwd(), "mutant_plots")
+DS_PATH = os.path.join(os.getcwd(), "subset")
 def create_filname_dict():
     '''
     This function creates a dictionary with all labels and 
@@ -30,7 +30,7 @@ def create_filname_dict():
                 print(f'*ds[{lbl} = [{os.path.join(cwd, img)}]]')
                 ds[lbl] = []
                 ds[lbl].append(os.path.join(cwd, img))
-    output = open('ds.json', 'r+')
+    output = open('ds.json', 'w+')
     json.dump(ds, output, indent=3)
     output.close()
 
@@ -54,4 +54,7 @@ def load_numpy_dict_from_json(ds_filename_dict={}):
     json.dump(ds_numpy, output, indent=3)
     output.close()
 
-load_numpy_dict_from_json({})
+if __name__ == "__main__":
+    create_filname_dict()
+    
+    #load_numpy_dict_from_json({})

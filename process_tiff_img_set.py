@@ -96,11 +96,13 @@ class process_tiff_img_set():
         if(df.empty):
             #print(f'df is empty, loading existing df')
             df = pd.read_csv('ds.csv')
-        self.ds = []
-        for i, img in enumerate(df['2020-06-23__10-36-48-868']):
-            tensor = tf.convert_to_tensor(img)
-            self.ds.append(tensor)
-            #print(f'tensor: {tensor}')
+        self.ds = {}
+        for date in df:
+            for i, img in enumerate(date):
+                tensor = tf.convert_to_tensor(img)
+                if(date not in self.ds):
+                    self.ds[date] = []
+                self.ds[date].append(tensor)
         
         return self.ds
 
@@ -115,8 +117,7 @@ class process_tiff_img_set():
             obj_str += f'{i}: {str(obj)},\n'
         return f'<process_tiff_img_set>:\n{obj_str}'
 
-'''
+
 if __name__ == '__main__':
     pre_process = process_tiff_img_set('subset')
     print(pre_process)
-'''

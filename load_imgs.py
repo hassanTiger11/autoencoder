@@ -39,7 +39,6 @@ import tensorflow as tf
 import sys
 from tifffile import memmap
 
-
 def read_npy_file(item):
     '''
     WARNING: This function uses reshape so I can fit the data into a tf dataset obj
@@ -86,7 +85,6 @@ def load_dataset2():
     print(f'dataset: {dataset}')
     return dataset
 
-
 DS_PATH = os.path.join(os.getcwd(), "subset")
 def create_filname_dict():
     '''
@@ -107,7 +105,7 @@ def create_filname_dict():
                 print(f'*ds[{lbl} = [{os.path.join(cwd, img)}]]')
                 ds[lbl] = []
                 ds[lbl].append(os.path.join(cwd, img))
-    output = open('ds.json', 'w+')
+    output = open('ds.json', 'r+')
     json.dump(ds, output, indent=3)
     output.close()
 
@@ -133,6 +131,4 @@ def load_numpy_dict_from_json(ds_filename_dict={}):
     
 
 if __name__ == "__main__":
-
     load_dataset2()
-

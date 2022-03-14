@@ -43,6 +43,9 @@ class process_tiff_img_set():
         labels = os.listdir(DS_PATH)
         for lbl in labels:
             cwd = os.path.join(DS_PATH, lbl)
+            if(not os.path.isdir(cwd)):
+                print(f'{cwd} is not a directory. Will not be in dict')
+                continue
             images = os.listdir(cwd)
             for img in images:
                 #convert to numpy matrix here

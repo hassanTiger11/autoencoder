@@ -11,3 +11,5 @@ subset*
 *json
 __pycache__
 
+.venv
+.ipyn*

@@ -9,9 +9,12 @@ x_train = x_train.get_tensor()
 x_test = process_tiff_img_set('./subset2')
 x_test = x_test.get_tensor()
 
+print(f'x_train: {x_train}')
 
-print(f'x_train shape: {x_train.shape}')
-print(f'x_test shape: {x_test.shape}')
+print(f'x_test: {x_test}')
+
+#print(f'x_train shape: {x_train.shape}')
+#print(f'x_test shape: {x_test.shape}')
 
 #print(f'{ds}')
 

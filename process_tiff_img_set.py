@@ -11,6 +11,9 @@ foldername:
             ...
         ...
 
+I produce a list of all images in all files without labels:
+[ tensor(img1), tensor(img2), ...]
+
 '''
 
 import pandas as pd
@@ -28,10 +31,7 @@ class process_tiff_img_set():
         
         self.folder = ds_folder_name
         self.df =  self.create_df()
-        #self.ds = self.load_from_df()
-        self.ds = self.df
-
-       
+        
 
     def create_df(self):
         '''
@@ -39,7 +39,7 @@ class process_tiff_img_set():
         images file paths
         I will use later to store numpy arrays
         '''
-        ds = {}
+        ds = []
         DS_PATH = os.path.join(os.getcwd(), self.folder)
         labels = os.listdir(DS_PATH)
         for lbl in labels:
@@ -54,18 +54,14 @@ class process_tiff_img_set():
                     print(f'{img} is not a tiff file. Will not be in dict')
                     continue
                 path = os.path.join(cwd, img)
+
+                #changes
                 img_np = process_path(path) #Tensor 
-                if(lbl in ds):
-                    #print(f'#ds[{lbl} = [..., {os.path.join(cwd, img)}]')
-                    
-                    ds[lbl].append(img_np)
-                else:
-                    #print(f'*ds[{lbl} = [{os.path.join(cwd, img)}]]')
-                    ds[lbl] = []
-                    ds[lbl].append(img_np)
-        df = pd.DataFrame.from_dict(ds)
-        df.to_csv('ds.csv')
-        return df
+                ds.append(img_np)
+
+        #df = pd.DataFrame(ds)
+        #df.to_csv('ds.csv')
+        return ds
         
     def get_dataframe(self):
         '''Create a datrame from json file'''
@@ -75,11 +71,8 @@ class process_tiff_img_set():
         return df
 
     def decode_img(self, img):
-
-        
         #print(f'decoding ... ')
         img = tfio.experimental.image.decode_tiff(img, index=0, name=None)
-
         # resize the image to the desired size
         return tf.image.resize(img, [256, 256])
 
@@ -93,34 +86,13 @@ class process_tiff_img_set():
 
         return img
 
-
-    def load_from_df(self):
-        '''
-        This function loads a tensorflow dataset from pandas dataframe
-        WARNINGL: This is for expermentation, edit code to automize
-        '''
-        df = self.df
-        if(df.empty):
-            #print(f'df is empty, loading existing df')
-            df = pd.read_csv('ds.csv')
-        self.ds = {}
-        for date in df:
-            for i, img in enumerate(date):
-                tensor = tf.convert_to_tensor(img)
-                if(date not in self.ds):
-                    self.ds[date] = []
-                self.ds[date].append(tensor)
-        pd.DataFrame(self.ds).to_csv('processed_ds.csv')
-        return self.ds
-
     def get_tensor(self):
-        return pd.DataFrame(self.ds)
-    def get_dataframe(self):
-        return self.df
+        return (self.df)
+
 
     def __str__(self):
         obj_str = ""
-        for i, obj in enumerate(self.ds):
+        for i, obj in enumerate(self.df):
             obj_str += f'{i}: {str(obj)},\n'
         return f'<process_tiff_img_set>:\n{obj_str}'
 

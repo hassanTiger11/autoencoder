@@ -28,7 +28,8 @@ class process_tiff_img_set():
         
         self.folder = ds_folder_name
         self.df =  self.create_df()
-        self.ds = self.load_from_df()
+        #self.ds = self.load_from_df()
+        self.ds = self.df
 
        
 
@@ -49,8 +50,11 @@ class process_tiff_img_set():
             images = os.listdir(cwd)
             for img in images:
                 #convert to numpy matrix here
+                if(img.split('.')[1] != 'tif'):
+                    print(f'{img} is not a tiff file. Will not be in dict')
+                    continue
                 path = os.path.join(cwd, img)
-                img_np = process_path(path)
+                img_np = process_path(path) #Tensor 
                 if(lbl in ds):
                     #print(f'#ds[{lbl} = [..., {os.path.join(cwd, img)}]')
                     
@@ -106,11 +110,11 @@ class process_tiff_img_set():
                 if(date not in self.ds):
                     self.ds[date] = []
                 self.ds[date].append(tensor)
-        
+        pd.DataFrame(self.ds).to_csv('processed_ds.csv')
         return self.ds
 
     def get_tensor(self):
-        return self.ds
+        return pd.DataFrame(self.ds)
     def get_dataframe(self):
         return self.df
 

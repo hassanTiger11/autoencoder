@@ -9,4 +9,5 @@ ds*
 
 subset*
 *json
+__pycache__
 
